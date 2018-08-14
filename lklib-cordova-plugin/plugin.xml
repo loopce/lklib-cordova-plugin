@@ -20,7 +20,7 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
       id="lklib-cordova-plugin"
-      version="0.1">
+      version="1.0">
     <name>LKLib</name>
     <description>LoopKey Communication Library Plugin</description>
     <license>MIT License</license>
