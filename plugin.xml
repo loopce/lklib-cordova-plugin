@@ -20,7 +20,7 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
       id="lklib-cordova-plugin"
-      version="1.0">
+      version="1.0.0">
     <name>LKLib</name>
     <description>LoopKey Communication Library Plugin</description>
     <license>MIT License</license>
@@ -29,7 +29,7 @@
     <issue>https://github.com/loopce/lklib-cordova-plugin/issues</issue>
 
     <js-module src="www/lklib.js" name="lklib">
-        <clobbers target="navigator.lklib" />
+        <clobbers target="LKLib" />
     </js-module>
 
     <!-- android -->
