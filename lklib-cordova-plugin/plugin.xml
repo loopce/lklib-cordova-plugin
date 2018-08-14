@@ -25,7 +25,7 @@
     <description>LoopKey Communication Library Plugin</description>
     <license>MIT License</license>
     <keywords>loopkey,bluetooth,ble</keywords>
-    <repo>https://github.com/loopce/lklib-cordova-plugin.git</repo>
+    <repo>https://github.com/loopce/lklib-cordova-plugin.git/lklib-cordova-plugin</repo>
     <issue>https://github.com/loopce/lklib-cordova-plugin/issues</issue>
 
     <js-module src="www/lklib.js" name="lklib">

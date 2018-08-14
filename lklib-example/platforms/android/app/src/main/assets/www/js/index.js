@@ -16,6 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+// var lklib = cordova.require("cordova/plugin/lklib");
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -28,6 +31,9 @@ var app = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
+        var md = cordova.require("cordova/plugin_list").metadata;
+        console.log(md);
+        // lklib.hello();
     },
 
     // Update DOM on a Received Event
