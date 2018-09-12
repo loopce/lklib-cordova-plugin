@@ -1,0 +1,28 @@
+{
+  "name": "lklib-cordova-plugin",
+  "version": "1.0.0",
+  "description": "LoopKey Communication Library Plugin",
+  "cordova": {
+    "id": "lklib-cordova-plugin",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loopce/lklib-cordova-plugin.git"
+  },
+  "keywords": [
+    "loopkey",
+    "bluetooth",
+    "ble",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "Daniel Sandoval",
+  "license": "MIT License",
+  "bugs": {
+    "url": "https://github.com/loopce/lklib-cordova-plugin/issues"
+  },
+  "homepage": "https://github.com/loopce/lklib-cordova-plugin#readme"
+}

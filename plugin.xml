@@ -25,7 +25,7 @@
     <description>LoopKey Communication Library Plugin</description>
     <license>MIT License</license>
     <keywords>loopkey,bluetooth,ble</keywords>
-    <repo>https://github.com/loopce/lklib-cordova-plugin.git/lklib-cordova-plugin</repo>
+    <repo>https://github.com/loopce/lklib-cordova-plugin.git</repo>
     <issue>https://github.com/loopce/lklib-cordova-plugin/issues</issue>
 
     <js-module src="www/lklib.js" name="lklib">
@@ -36,11 +36,28 @@
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="LKLib" >
-                <param name="android-package" value="br.com.loopkey.lklib.cordova.LKLib"/>
+                <param name="android-package" value="br.com.loopkey.lklib.cordova.LKLibCordova"/>
             </feature>
         </config-file>
+        
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.BLUETOOTH" />
+            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-        <source-file src="src/android/LKLib.java" target-dir="src/br/com/loopkey/lklib/cordova" />
+            <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
+        </config-file>
+
+        <source-file src="src/android/LKLibCordova.java" target-dir="src/br/com/loopkey/lklib/cordova" />
+
+        <!-- <lib-file src="libs/lklib-release.aar" /> -->
+        <framework src="src/android/lklib.gradle" custom="true" type="gradleReference" />
+        <resource-file src="libs/lklib-release.aar" target="libs/lklib-release.aar" />
+        <!-- <source-file src="libs/lklib-release.aar" framework="true" /> -->
+        <resource-file arch="x86" src="libs/jniLibs/x86/liblkspeck.so" target="jniLibs/x86/liblkspeck.so" />
+        <resource-file arch="x64" src="libs/jniLibs/x86_64/liblkspeck.so" target="jniLibs/x86_64/liblkspeck.so" />
+        <resource-file arch="ARM" src="libs/jniLibs/armeabi-v7a/liblkspeck.so" target="jniLibs/armeabi-v7a/liblkspeck.so" />
+        <resource-file arch="ARM" src="libs/jniLibs/arm64-v8a/liblkspeck.so" target="jniLibs/arm64-v8a/liblkspeck.so" />
     </platform>
 
     <!-- ios -->
