@@ -77,70 +77,70 @@ public class LKLibCordova extends CordovaPlugin implements LKReachableDeviceList
         }
 
         String command = null;
-        JSONObject deviceObj = null;
+        LKCommDevice commDevice = null;
         try {
-            deviceObj = args.getJSONObject(0);
+            commDevice = _commDeviceFromJson(args.getJSONObject(0));
             command = args.getString(1);
-            if (deviceObj == null || command == null) {
-                callbackContext.error("InvalidParameters");
-                return;
-            }
-        } catch (JSONException _) {
-            callbackContext.error("InvalidParameters");
+        } catch (JSONException _) {}
+        if (commDevice == null) {
+            callbackContext.error("InvalidDeviceParameter");
+            return;
+        } else if (command == null) {
+            callbackContext.error("MissingCommandParameter");
             return;
         }
 
         _commCallbackContext = callbackContext;
 
         if (command.equals("unlock")) {
-            try {
-                LKSerialData serialData = new LKSerialData(deviceObj.getString("serial"));
-                LKCommDevice commDevice = new LKCommDevice(serialData.getSerialCode());
-                String deviceKey = deviceObj.getString("key");
-                commDevice.key = Base64.decode(deviceKey, 0);
-
-                LKCommand lkCommand = LKCommandRepository.createUnlockCommand(new LKUnlockCommand.Listener() {
-                    @Override
-                    public void onResponse(LKUnlockCommand.Response response) {
-                        _commCallbackContext.success(response.toString());
-                        _commCallbackContext = null;
-                        _communicator = null;
-                    }
-        
-                    @Override
-                    public void onError(LKCommand.Error error) {
-                        _commCallbackContext.error(error.toString());
-                        _commCallbackContext = null;
-                        _communicator = null;
-                    }
-                });
-
-                lkCommand.setDevice(commDevice);
-                lkCommand.setUserId(0);
-
-                _communicator = _lkReachableDevice.deviceCommunicatorForDevice(commDevice, 0);
-
-                if (_communicator == null) {
-                    _commCallbackContext.error("DeviceNotReachable");
+            LKCommand lkCommand = LKCommandRepository.createUnlockCommand(new LKUnlockCommand.Listener() {
+                @Override
+                public void onResponse(LKUnlockCommand.Response response) {
+                    _commCallbackContext.success(response.toString());
                     _commCallbackContext = null;
-                    return;
+                    _communicator = null;
                 }
+    
+                @Override
+                public void onError(LKCommand.Error error) {
+                    _commCallbackContext.error(error.toString());
+                    _commCallbackContext = null;
+                    _communicator = null;
+                }
+            });
 
-                _communicator.execute(lkCommand);
-            } catch (InvalidParameterException _) {
-                _commCallbackContext.error("InvalidSerial");
+            lkCommand.setDevice(commDevice);
+            lkCommand.setUserId(0);
+
+            _communicator = _lkReachableDevice.deviceCommunicatorForDevice(commDevice, 0);
+
+            if (_communicator == null) {
+                _commCallbackContext.error("DeviceNotReachable");
                 _commCallbackContext = null;
-            } catch (IllegalArgumentException _) {
-                _commCallbackContext.error("InvalidBase64Data");
-                _commCallbackContext = null;
-            } catch (JSONException _) {
-                _commCallbackContext.error("InvalidParameters");
-                _commCallbackContext = null;
+                return;
             }
+
+            _communicator.execute(lkCommand);
         } else {
             _commCallbackContext.error("InvalidCommand");
             _commCallbackContext = null;
         }
+    }
+
+    private LKCommDevice _commDeviceFromJson(JSONObject deviceObj)
+    {
+        try {
+            LKSerialData serialData = new LKSerialData(deviceObj.getString("serial"));
+            LKCommDevice commDevice = new LKCommDevice(serialData.getSerialCode());
+            String deviceKey = deviceObj.getString("key");
+            commDevice.key = Base64.decode(deviceKey, 0);
+            if (deviceObj.has("kind")) {
+                commDevice.kind = deviceObj.getString("kind");
+                commDevice.commandData = Base64.decode(deviceObj.getString("commandData"), 0);
+            }
+            return commDevice;
+        }  catch (IllegalArgumentException|JSONException _) {}
+        return null;
     }
 
     private void _startDiscovery(CallbackContext callbackContext)
