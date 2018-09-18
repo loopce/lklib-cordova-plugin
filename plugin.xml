@@ -50,14 +50,8 @@
 
         <source-file src="src/android/LKLibCordova.java" target-dir="src/br/com/loopkey/lklib/cordova" />
 
-        <!-- <lib-file src="libs/lklib-release.aar" /> -->
         <framework src="src/android/lklib.gradle" custom="true" type="gradleReference" />
         <resource-file src="libs/lklib-release.aar" target="libs/lklib-release.aar" />
-        <!-- <source-file src="libs/lklib-release.aar" framework="true" /> -->
-        <resource-file arch="x86" src="libs/jniLibs/x86/liblkspeck.so" target="jniLibs/x86/liblkspeck.so" />
-        <resource-file arch="x64" src="libs/jniLibs/x86_64/liblkspeck.so" target="jniLibs/x86_64/liblkspeck.so" />
-        <resource-file arch="ARM" src="libs/jniLibs/armeabi-v7a/liblkspeck.so" target="jniLibs/armeabi-v7a/liblkspeck.so" />
-        <resource-file arch="ARM" src="libs/jniLibs/arm64-v8a/liblkspeck.so" target="jniLibs/arm64-v8a/liblkspeck.so" />
     </platform>
 
     <!-- ios -->

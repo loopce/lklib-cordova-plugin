@@ -7,6 +7,7 @@ import br.com.loopkey.indigo.lklib.core.LKReachableDevice;
 import br.com.loopkey.indigo.lklib.core.LKReachableDeviceImpl;
 import br.com.loopkey.indigo.lklib.entity.LKCommDevice;
 import br.com.loopkey.indigo.lklib.entity.LKEntity;
+import br.com.loopkey.indigo.lklib.entity.LKSerialData;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -83,11 +84,14 @@ public class LKLibCordova extends CordovaPlugin implements LKReachableDeviceList
         JSONObject obj = new JSONObject();
         JSONArray arr = new JSONArray();
         for (LKEntity device : lkEntityList) {
-            arr.put(Base64.encodeToString(device.getSerialCode(), 0));
             LOG.d("LKLIB", device.getName());
             LOG.d("LKLIB", Base64.encodeToString(device.getSerialCode(), 0));
             LOG.d("LKLIB", "Device Roll Count (from broadcast): " +
                     Base64.encodeToString(device.getRollCount(), 0));
+            JSONObject entityObj = _entityToObject(device);
+            if (entityObj != null) {
+                arr.put(entityObj);
+            }
         }
         try {
             obj.put("devices", arr);
@@ -95,5 +99,20 @@ public class LKLibCordova extends CordovaPlugin implements LKReachableDeviceList
         PluginResult result = new PluginResult(PluginResult.Status.OK, obj);
         result.setKeepCallback(true);
         _reachableCallbackContext.sendPluginResult(result);
+    }
+
+    private JSONObject _entityToObject(LKEntity entity)
+    {
+        try {
+            JSONObject obj = new JSONObject();
+            obj.put("serial", entity.getSerialData().toString());
+            obj.put("name", entity.getName());
+            obj.put("rollCountData", Base64.encodeToString(entity.getRollCount(), 0).trim());
+            obj.put("rssi", entity.getRSSI());
+            obj.put("flags", entity.getFlags());
+            return obj;
+        } catch(Exception _) {
+            return null;
+        }
     }
 }
