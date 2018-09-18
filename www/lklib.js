@@ -54,6 +54,11 @@ LKLib.prototype.stopScan = function()
     }
 }
 
+LKLib.prototype.communicateWithDevice = function(device, message, success, error)
+{
+    exec(success, error, 'LKLib', 'communicateWithDevice', [device, message]);
+}
+
 var lklib = new LKLib();
 
 module.exports = lklib;
